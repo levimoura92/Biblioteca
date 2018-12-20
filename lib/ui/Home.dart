@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 
-class Home extends StatefulWidget{
+class Home extends StatelessWidget{
   @override
-  State<StatefulWidget> createState() {
-    return null;
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      
+    );
   }
 
 }
