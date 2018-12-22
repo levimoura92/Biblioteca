@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'Utils/SQLUtils.dart';
+import 'ui/Library.dart';
 
 void main() => runApp(MyApp());
 
@@ -37,6 +38,30 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+  String _senhaInvalida = "";
+  final TextEditingController _tuc = new TextEditingController();
+  final TextEditingController _tpc = new TextEditingController();
+
+  void _clear(){
+    setState(() {
+      _tuc.clear();
+      _tpc.clear() ;
+      _senhaInvalida="";
+    });
+  }
+
+  void _login(){
+    setState(() {
+      String usuario = "levi";
+      String senha = "123";
+      if(_tpc.text == senha && _tuc.text == usuario) {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => Library()));
+      }else{
+        _senhaInvalida = "Usuario ou Sennha invalidos";
+      }
+    });
+  }
 
   void _incrementCounter() {
     setState(() {
@@ -63,14 +88,24 @@ class _MyHomePageState extends State<MyHomePage> {
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
-      body: Center(
+      body:
+        Center(
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            new Container(
+              height: 0.0,
+              color: Colors.red,
+
+              child:
+                new Text(_senhaInvalida),
+
+            ),
             new TextField(
               autofocus: true,
+              controller: _tuc,
               decoration: new InputDecoration(
                 hintText: "Usuario: ",
                 filled: true,
@@ -80,13 +115,33 @@ class _MyHomePageState extends State<MyHomePage> {
             new TextField(
               autofocus: true,
               obscureText: true,
+              controller: _tpc,
               decoration: new InputDecoration(
                 hintText: "Password: ",
                 filled: true,
                 //fillColor: Colors.indigoAccent,
               ),
             ),
-            new IconButton(icon: new Icon(Icons.send), onPressed: null)
+            new Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                new Padding(padding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 50.0)),
+                new Container(
+                  margin: EdgeInsets.all(20.0),
+                  child: new RaisedButton(onPressed: _clear,
+                    color: Colors.red,
+                    child: new Text("Clear!"),),
+                ),
+                new Container(
+                    margin: EdgeInsets.all(20.0),
+
+                    child: new RaisedButton(onPressed: _login,
+                    color: Colors.lightBlueAccent,
+                    child: new Text("Login"))
+                )
+              ],
+            )
+
           ],
         ),
       ),
