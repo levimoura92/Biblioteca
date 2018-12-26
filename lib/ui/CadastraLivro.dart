@@ -59,10 +59,10 @@ class _FormCadastraLivroState extends State<FormCadastraLivro>{
             new RaisedButton(
                 onPressed: _saveBook,
                 child:
-                new Column(
-                  children: <Widget>[
-                    new Icon(Icons.save, size: 90.0, semanticLabel: "livro"),
-                    new Text("Salvar")
+                  new Column(
+                    children: <Widget>[
+                      new Icon(Icons.save, size: 90.0, semanticLabel: "livro"),
+                      new Text("Salvar")
                   ],
                 )
             ),
@@ -88,8 +88,6 @@ class _FormCadastraLivroState extends State<FormCadastraLivro>{
 
   void _saveBook(){
     String titulo = ttc.text;
-    //debugPrint("Path = $_filePath");
-    //debugPrint("Titulo = $titulo");
     if(titulo != "" && _filePath != ""){
       debugPrint("$titulo is on path: $_filePath");
     }
