@@ -1,4 +1,4 @@
-import 'UserDSO.dart';
+import 'package:biblioteca_ceprj/UserDSO.dart';
 
 class SQLUtils{
   UserDSO login(String username, String password){

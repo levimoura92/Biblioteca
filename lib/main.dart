@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'Utils/SQLUtils.dart';
+import 'ui/CadastraLivro.dart';
+import 'ui/Home.dart';
 
 void main() => runApp(MyApp());
 
@@ -9,9 +10,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Biblioteca CEPRJ',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      theme: ThemeData.dark(),
       home: MyHomePage(title: 'Biblioteca CEPRJ: Login'),
     );
   }
@@ -19,35 +18,16 @@ class MyApp extends StatelessWidget {
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
   final String title;
-
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+  final tuc = new TextEditingController();
+  final tpc = new TextEditingController();
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -70,6 +50,7 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             new TextField(
+              controller: tuc,
               autofocus: true,
               decoration: new InputDecoration(
                 hintText: "Usuario: ",
@@ -78,6 +59,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
             new TextField(
+              controller: tpc,
               autofocus: true,
               obscureText: true,
               decoration: new InputDecoration(
@@ -86,10 +68,47 @@ class _MyHomePageState extends State<MyHomePage> {
                 //fillColor: Colors.indigoAccent,
               ),
             ),
-            new IconButton(icon: new Icon(Icons.send), onPressed: null)
+            new Padding(padding: EdgeInsets.all(10.0)),
+            new FlatButton(
+              color: Colors.redAccent,
+              padding: EdgeInsets.only(left:100.0, right: 100.0, top: 20.0, bottom: 20.0),
+              onPressed: _clearFields,
+              child:
+                new Text("Clear")
+            ),
+            new Padding(padding: EdgeInsets.all(10.0)),
+            new RaisedButton(
+              padding: EdgeInsets.only(left:100.0, right: 100.0, top: 20.0, bottom: 20.0),
+              onPressed: _login,
+              child:
+                new Text("Login"),
+            ),
           ],
         ),
       ),
     );
+  }
+
+  void _login(){
+    String user = tuc.text;
+    String password = tpc.text;
+    if(user == "levi" && password == "123") {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => CadastraLivro()),
+      );
+    }
+  }
+
+  void _clearFields(){
+    tuc.clear();
+    tpc.clear();
+  }
+
+  @override
+  void dispose() {
+    tuc.dispose();
+    tpc.dispose();
+    super.dispose();
   }
 }
