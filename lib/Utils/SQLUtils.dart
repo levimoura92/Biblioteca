@@ -1,4 +1,7 @@
-import 'package:biblioteca_ceprj/UserDSO.dart';
+import 'UserDSO.dart';
+import 'package:firebase_database/firebase_database.dart';
+
+final FirebaseDatabase _db = FirebaseDatabase.instance;
 
 class SQLUtils{
   UserDSO login(String username, String password){
@@ -11,5 +14,14 @@ class SQLUtils{
     }else{
       return null;
     }
+  }
+
+  void gravaLivro(String titulo, String descr, int areaCod  ){
+    String link = ""+titulo;
+    _db.setPersistenceEnabled(true);
+    DatabaseReference livros = _db.reference().child("livros");
+    livros.push().set(<String, String>{
+      "titulo": titulo
+    });
   }
 }

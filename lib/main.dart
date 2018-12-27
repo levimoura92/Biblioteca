@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'ui/CadastraLivro.dart';
-import 'ui/Home.dart';
+import 'Utils/SQLUtils.dart';
+import 'ui/Library.dart';
 
 void main() => runApp(MyApp());
 
@@ -10,7 +10,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Biblioteca CEPRJ',
-      theme: ThemeData.dark(),
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
       home: MyHomePage(title: 'Biblioteca CEPRJ: Login'),
     );
   }
@@ -19,39 +21,58 @@ class MyApp extends StatelessWidget {
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
   final String title;
+
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
-  final tuc = new TextEditingController();
-  final tpc = new TextEditingController();
+  String _senhaInvalida = "";
+  final TextEditingController _tuc = new TextEditingController();
+  final TextEditingController _tpc = new TextEditingController();
 
+  void _clear(){
+    setState(() {
+      _tuc.clear();
+      _tpc.clear() ;
+      _senhaInvalida="";
+    });
+  }
+
+  void _login(){
+    setState(() {
+      String usuario = "levi";
+      String senha = "123";
+      if(_tpc.text == senha && _tuc.text == usuario) {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => Library()));
+      }else{
+        _senhaInvalida = "Usuario ou Sennha invalidos";
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
+      body:
+        Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            new Container(
+              height: 0.0,
+              color: Colors.red,
+              child:
+                new Text(_senhaInvalida),
+            ),
             new TextField(
-              controller: tuc,
               autofocus: true,
+              controller: _tuc,
               decoration: new InputDecoration(
                 hintText: "Usuario: ",
                 filled: true,
@@ -59,56 +80,37 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
             new TextField(
-              controller: tpc,
               autofocus: true,
               obscureText: true,
+              controller: _tpc,
               decoration: new InputDecoration(
                 hintText: "Password: ",
                 filled: true,
                 //fillColor: Colors.indigoAccent,
               ),
             ),
-            new Padding(padding: EdgeInsets.all(10.0)),
-            new FlatButton(
-              color: Colors.redAccent,
-              padding: EdgeInsets.only(left:100.0, right: 100.0, top: 20.0, bottom: 20.0),
-              onPressed: _clearFields,
-              child:
-                new Text("Clear")
-            ),
-            new Padding(padding: EdgeInsets.all(10.0)),
-            new RaisedButton(
-              padding: EdgeInsets.only(left:100.0, right: 100.0, top: 20.0, bottom: 20.0),
-              onPressed: _login,
-              child:
-                new Text("Login"),
-            ),
+            new Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                new Padding(padding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 50.0)),
+                new Container(
+                  margin: EdgeInsets.all(20.0),
+                  child: new RaisedButton(onPressed: _clear,
+                    color: Colors.red,
+                    child: new Text("Clear!"),),
+                ),
+                new Container(
+                  margin: EdgeInsets.all(20.0),
+                  child: new RaisedButton(onPressed: _login,
+                    color: Colors.lightBlueAccent,
+                    child: new Text("Login"))
+                )
+              ],
+            )
+
           ],
         ),
       ),
     );
-  }
-
-  void _login(){
-    String user = tuc.text;
-    String password = tpc.text;
-    if(user == "levi" && password == "123") {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => CadastraLivro()),
-      );
-    }
-  }
-
-  void _clearFields(){
-    tuc.clear();
-    tpc.clear();
-  }
-
-  @override
-  void dispose() {
-    tuc.dispose();
-    tpc.dispose();
-    super.dispose();
   }
 }
