@@ -1,10 +1,12 @@
+import 'package:firebase_database/firebase_database.dart';
+
 class LivroDSO{
   String _titulo;
-  int _cod;
+  String _desc;
   String _link;
-  int _areaCod;
+  String key;
 
-  LivroDSO(this._titulo, this._cod, this._link, this._areaCod);
+  LivroDSO(this._titulo, this._desc, this._link);
 
   String getTitulo() => _titulo;
 
@@ -18,10 +20,26 @@ class LivroDSO{
     this._link = link;
   }
 
-  int getCod() => _cod;
+  String getDesc() => _desc;
 
-  void setCod(int cod){
-    this._cod = cod;
+  void setCod(String desc){
+    this._desc = desc;
   }
+
+  toJson(){
+    return {
+      "titulo":_titulo,
+      "link" : _link,
+      "descricao": _desc,
+    };
+  }
+
+  LivroDSO.fromSnapshot(DataSnapshot snapshot){
+    key = snapshot.key;
+    _titulo = snapshot.value["titulo"];
+    _desc = snapshot.value["descricao"];
+    _link = snapshot.value["link"];
+  }
+
 
 }

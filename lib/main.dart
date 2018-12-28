@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'Utils/SQLUtils.dart';
 import 'ui/Library.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:biblioteca_ceprj/Utils/FirebaseUtils.dart';
 
 void main() => runApp(MyApp());
 
@@ -10,9 +11,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Biblioteca CEPRJ',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      theme: ThemeData.dark(),
       home: MyHomePage(title: 'Biblioteca CEPRJ: Login'),
     );
   }
@@ -40,15 +39,11 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  void _login(){
+  void _login() async{
+    FirebaseUser user = await FirebaseUtils().login(_tuc.text, _tpc.text);
     setState(() {
-      String usuario = "levi";
-      String senha = "123";
-      if(_tpc.text == senha && _tuc.text == usuario) {
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => Library()));
-      }else{
-        _senhaInvalida = "Usuario ou Sennha invalidos";
+      if(user != null){
+        Navigator.push(context, MaterialPageRoute(builder: (context)=>Library()));
       }
     });
   }

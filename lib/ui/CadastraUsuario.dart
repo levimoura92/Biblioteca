@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:biblioteca_ceprj/DSO/UserDSO.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:biblioteca_ceprj/Utils/FirebaseUtils.dart';
 
 class CadastraUsuario extends StatelessWidget{
@@ -70,7 +70,8 @@ class FormCadastraUsuarioState extends State<FormCadastraUsuario>{
     tpc.clear();
   }
 
-  void _cadastrar() {
-
+  void _cadastrar() async {
+    FirebaseUser user =await FirebaseUtils().createUser(tec.text, tpc.text);
+    debugPrint("${user.email}");
   }
 }
